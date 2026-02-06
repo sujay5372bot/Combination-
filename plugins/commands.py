@@ -16,6 +16,47 @@ from os import environ, execle, system
 
 START_TIME = time.time()
 
+class batch_temp(object):
+    IS_BATCH = {}
+
+async def downstatus(client, statusfile, message, chat):
+    while True:
+        if os.path.exists(statusfile):
+            break
+
+        await asyncio.sleep(3)
+      
+    while os.path.exists(statusfile):
+        with open(statusfile, "r") as downread:
+            txt = downread.read()
+        try:
+            await client.edit_message_text(chat, message.id, f"**Downloaded:** **{txt}**")
+            await asyncio.sleep(10)
+        except:
+            await asyncio.sleep(5)
+
+
+# upload status
+async def upstatus(client, statusfile, message, chat):
+    while True:
+        if os.path.exists(statusfile):
+            break
+
+        await asyncio.sleep(3)      
+    while os.path.exists(statusfile):
+        with open(statusfile, "r") as upread:
+            txt = upread.read()
+        try:
+            await client.edit_message_text(chat, message.id, f"**Uploaded:** **{txt}**")
+            await asyncio.sleep(10)
+        except:
+            await asyncio.sleep(5)
+
+
+# progress writer
+def progress(current, total, message, type):
+    with open(f'{message.id}{type}status.txt', "w") as fileup:
+        fileup.write(f"{current * 100 / total:.1f}%")
 # Don't Remove Credit Tg - @VJ_Botz
 # Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
 # Ask Doubt on telegram @KingVJ01
